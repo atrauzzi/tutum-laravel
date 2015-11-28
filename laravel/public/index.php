@@ -8,6 +8,10 @@
 		<h1>Almost there...</h1>
 		<p>Don't forget to set up your laravel project!</p>
 		
+		<pre>
+			<?php phpinfo(); ?>
+		</pre>
+		
 	</body>
 	
 </html>
