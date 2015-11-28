@@ -1,0 +1,9 @@
+#!/bin/bash
+
+START_PWD=`pwd -P`
+cd `dirname $BASH_SOURCE`/..
+PROJECT_ROOT=`pwd -P`
+
+docker run --volume=$(pwd)laravel:/app composer/composer "$@"
+
+cd $START_PWD

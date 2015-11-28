@@ -1,0 +1,52 @@
+#
+# https://github.com/tutumcloud/haproxy
+# https://hub.docker.com/_/nginx/
+# https://hub.docker.com/_/php/
+#
+
+
+load_balancer:
+
+  container_name: load_balancer
+  image: tutum/haproxy
+
+  links:
+    - web_1
+#    - web_2
+#    - web_3
+
+  ports:
+    - "8080:80"
+
+
+web_1:
+
+  container_name: web_1  
+  build: .
+  dockerfile: nginx.Dockerfile
+
+  volumes:
+    - "./laravel:/var/www"
+
+  links:
+    - "php_1:fpm"
+
+
+php_1:
+
+  container_name: php_1
+  build: .
+  dockerfile: fpm.Dockerfile
+
+  volumes:
+    - "./laravel:/var/www"
+
+
+
+#
+#php_2:
+#  image: php/5-fpm
+
+#
+#php_3:
+#  image: php/5-fpm
