@@ -12,16 +12,14 @@ load_balancer:
 
   links:
     - web_1
-#    - web_2
-#    - web_3
+    - web_2
 
   ports:
     - "8080:80"
 
 
 web_1:
-
-  container_name: web_1  
+  
   build: .
   dockerfile: nginx.Dockerfile
 
@@ -30,23 +28,36 @@ web_1:
 
   links:
     - "php_1:fpm"
-
+    
+  ports:
+    - "8081:80"
 
 php_1:
 
-  container_name: php_1
   build: .
   dockerfile: fpm.Dockerfile
 
   volumes:
     - "./laravel:/var/www"
+    
+web_2:
+  
+  build: .
+  dockerfile: nginx.Dockerfile
 
+  volumes:
+    - "./laravel:/var/www"
 
+  links:
+    - "php_2:fpm"
+    
+  ports:
+    - "8082:80"
 
-#
-#php_2:
-#  image: php/5-fpm
+php_2:
 
-#
-#php_3:
-#  image: php/5-fpm
+  build: .
+  dockerfile: fpm.Dockerfile
+
+  volumes:
+    - "./laravel:/var/www"
