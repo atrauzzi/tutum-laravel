@@ -4,6 +4,8 @@ START_PWD=`pwd -P`
 cd `dirname $BASH_SOURCE`/..
 PROJECT_ROOT=`pwd -P`
 
-docker run --rm --volume=$PROJECT_ROOT:/app composer/composer "$@"
+GID=`id -g`
+
+docker-compose run --user=$UID:$GID cli "$@"
 
 cd $START_PWD

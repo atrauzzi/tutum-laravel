@@ -4,6 +4,14 @@
 # https://hub.docker.com/_/php/
 #
 
+redis:
+
+  container_name: redis
+  image: redis
+
+  ports:
+    - "6379:6379"
+
 
 load_balancer:
 
@@ -32,13 +40,6 @@ web_1:
   ports:
     - "8081:80"
 
-php_1:
-
-  build: .
-  dockerfile: fpm.Dockerfile
-
-  volumes:
-    - "./laravel:/var/www"
     
 web_2:
   
@@ -54,6 +55,19 @@ web_2:
   ports:
     - "8082:80"
 
+php_1:
+
+  build: .
+  dockerfile: fpm.Dockerfile
+
+  volumes:
+    - "./laravel:/var/www"
+    - "./etc/php-fpm.dev.conf:/usr/local/etc/php-fpm.conf"
+
+  links:
+    - redis
+
+
 php_2:
 
   build: .
@@ -61,3 +75,21 @@ php_2:
 
   volumes:
     - "./laravel:/var/www"
+    - "./etc/php-fpm.dev.conf:/usr/local/etc/php-fpm.conf"
+    
+  links:
+    - redis
+
+    
+cli:
+
+  container_name: cli
+
+  build: .
+  dockerfile: cli.Dockerfile
+  
+  volumes:
+    - "./laravel:/var/www"
+    
+  links:
+    - redis
